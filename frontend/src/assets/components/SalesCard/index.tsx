@@ -6,6 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./style.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "../../../utils/request";
+import { Sale } from "../../../models/sale";
 
 function salesCard() {
 
@@ -15,9 +17,11 @@ function salesCard() {
     const [minDate, setMinDate] = useState(min);
     const [maxDate, setMaxDate] = useState(max);
 
+    const [sale, setSale] = useState<Sale[]>([]);
+
     useEffect(() => {
-        axios.get("http://localhost:8090/sales")
-        .then(response => console.log(response.data));
+        axios.get(`${BASE_URL}/sales`)
+        .then(response => setSale(response.data.content));
     }, [])
 
     return (
@@ -57,51 +61,25 @@ function salesCard() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td className="show992">#341</td>
-                                <td className="show576">08/07/2022</td>
-                                <td>Anakin</td>
-                                <td className="show992">15</td>
-                                <td className="show992">11</td>
-                                <td>R$ 55300.00</td>
-                                <td>
-                                    <div className="dsmeta-red-btn-container">
-                                        <div className="dsmeta-red-btn">
-                                            <img src={notification} alt="Notificar" />
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="show992">#341</td>
-                                <td className="show576">08/07/2022</td>
-                                <td>Anakin</td>
-                                <td className="show992">15</td>
-                                <td className="show992">11</td>
-                                <td>R$ 55300.00</td>
-                                <td>
-                                    <div className="dsmeta-red-btn-container">
-                                        <div className="dsmeta-red-btn">
-                                            <img src={notification} alt="Notificar" />
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="show992">#341</td>
-                                <td className="show576">08/07/2022</td>
-                                <td>Anakin</td>
-                                <td className="show992">15</td>
-                                <td className="show992">11</td>
-                                <td>R$ 55300.00</td>
-                                <td>
-                                    <div className="dsmeta-red-btn-container">
-                                        <div className="dsmeta-red-btn">
-                                            <img src={notification} alt="Notificar" />
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            {sale.map(sales => {
+                                return(
+                                    <tr key={sales.id}>
+                                        <td className="show992">{sales.id}</td>
+                                        <td className="show576">{sales.date}</td>
+                                        <td>{sales.sellerName}</td>
+                                        <td className="show992">{sales.visited}</td>
+                                        <td className="show992">{sales.deals}</td>
+                                        <td>R$ {sales.amount.toFixed(2)}</td>
+                                        <td>
+                                            <div className="dsmeta-red-btn-container">
+                                                <div className="dsmeta-red-btn">
+                                                    <img src={notification} alt="Notificar" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )
+                            })}  
                         </tbody>
 
                     </table>

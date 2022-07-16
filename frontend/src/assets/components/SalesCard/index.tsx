@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../../utils/request";
 import { Sale } from "../../../models/sale";
+import NotificationButton from "../NotificationButton";
 
 function salesCard() {
 
@@ -79,9 +80,7 @@ function salesCard() {
                                         <td>R$ {sales.amount.toFixed(2)}</td>
                                         <td>
                                             <div className="dsmeta-red-btn-container">
-                                                <div className="dsmeta-red-btn">
-                                                    <img src={notification} alt="Notificar" />
-                                                </div>
+                                                <NotificationButton saleId={sales.id} />
                                             </div>
                                         </td>
                                     </tr>
